@@ -2,11 +2,6 @@ pipeline {
   agent any
 
   stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/dharaniprasad1005/saucelab_demotest.git'
-      }
-    }
 
     stage('Install Dependencies') {
       steps {
