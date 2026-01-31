@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/dharaniprasad2005/saucelab_demotest.git'
+        git 'https://github.com/dharaniprasad1005/saucelab_demotest.git'
       }
     }
 
