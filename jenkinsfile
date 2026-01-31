@@ -1,0 +1,34 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Checkout') {
+      steps {
+        git 'https://github.com/dharaniprasad2005/saucelab_demotest.git'
+      }
+    }
+
+    stage('Install Dependencies') {
+      steps {
+        sh 'npm ci'
+      }
+    }
+
+    stage('Run Playwright Tests') {
+      steps {
+        sh '''
+          docker build -t dharanigone/saucelab_demotest .
+          docker run --rm \
+            -e baseURL=https://www.saucedemo.com \
+            dharanigone/saucelab_demotest
+        '''
+      }
+    }
+
+    stage('Archive Report') {
+      steps {
+        archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+      }
+    }
+  }
+}
