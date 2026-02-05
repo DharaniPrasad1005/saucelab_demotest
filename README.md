@@ -152,7 +152,7 @@ This command starts a local server and automatically opens the Playwright HTML r
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/DharaniPrasad1005/saucelab_demotest.git
 
 # Navigate to project directory
 cd saucelab_demotest
