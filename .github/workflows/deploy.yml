@@ -1,0 +1,17 @@
+name: Deploy Application
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs::
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Deploy Application
+      run: |
+        echo "Deploying application..."
+        docker build -t dharanigone/saucelab_demotest .
+        docker run --rm -e baseURL=https://www.saucedemo.com dharanigone/saucelab_demotest
+        
