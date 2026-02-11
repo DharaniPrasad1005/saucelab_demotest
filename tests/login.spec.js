@@ -1,21 +1,59 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/login.page';
+import { LoginPage } from '../pages/login.page.js';
+import { ProductsPage } from '../pages/products.page.js';
+import { testData } from '../config/testData.js';
 
-test('valid login', async ({ page }) => {
-    await page.goto("/");
+test.describe('Login Functionality Tests', () => {
+    let loginPage;
+    let productsPage;
 
-    const login = new LoginPage(page);
-    await login.login('standard_user', 'secret_sauce');
+    test.beforeEach(async ({ page }) => {
+        loginPage = new LoginPage(page);
+        productsPage = new ProductsPage(page);
+        await page.goto('/');
+    });
 
-    await expect(page.url()).toContain('inventory.html');
-});
+    test('TC_LOGIN_001 - Valid login with standard user', async ({ page }) => {
+        await loginPage.login(
+            testData.users.standard.username,
+            testData.users.standard.password
+        );
 
-test('failed login', async ({ page }) => {
-    await page.goto("/");
+        await expect(page).toHaveURL(/.*inventory.html/);
+        await expect(page.locator(productsPage.pageTitle)).toHaveText('Products');
+    });
 
-    const login = new LoginPage(page);
-    await login.failedLogin('locked_out_user', 'secret_sauce');
+    test('TC_LOGIN_002 - Login with invalid credentials', async ({ page }) => {
 
-    await expect(page.locator('[data-test="error"]')).toBeVisible();
+        await loginPage.login(
+            testData.invalidCredentials.username,
+            testData.invalidCredentials.password
+        );
+
+        const errorMessage = await loginPage.getErrorMessage();
+        await expect(errorMessage).toBeVisible();
+        await expect(errorMessage).toContainText('do not match');
+    });
+
+    test('TC_LOGIN_003 - Login with locked out user', async ({ page }) => {
+ 
+        await loginPage.login(
+            testData.users.locked.username,
+            testData.users.locked.password
+        );
+
+        const errorMessage = await loginPage.getErrorMessage();
+        await expect(errorMessage).toBeVisible();
+        await expect(errorMessage).toContainText('locked out');
+    });
+
+    test('TC_LOGIN_004 - Login with empty credentials', async ({ page }) => {
+
+        await loginPage.login('', '');
+
+        const errorMessage = await loginPage.getErrorMessage();
+        await expect(errorMessage).toBeVisible();
+        await expect(errorMessage).toContainText('Username is required');
+    });
 
 });
