@@ -1,0 +1,23 @@
+pipeline {
+  agent any
+
+  stages {
+
+    stage('Run Playwright Tests') {
+      steps {
+        sh '''
+          docker build -t dharanigone/saucelab_demotest .
+          docker run --rm \
+            -e baseURL=https://www.saucedemo.com \
+            dharanigone/saucelab_demotest
+        '''
+      }
+    }
+
+    stage('Archive Report') {
+      steps {
+        archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+      }
+    }
+  }
+}

@@ -10,9 +10,22 @@ export default defineConfig({
   ],
   use: {
     baseURL: process.env.BASE_URL || 'https://www.saucedemo.com/',
-    browserName: 'chromium',
     headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure'
-  }
+  },
+  projects: [
+    {
+      name: 'Chromium',
+      use: { browserName: 'chromium' }
+    },
+    {
+      name: 'Firefox',
+      use: { browserName: 'firefox' }
+    },
+    {
+      name: 'WebKit',
+      use: { browserName: 'webkit' }
+    }
+  ]
 });
