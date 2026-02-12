@@ -10,7 +10,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Deploy Application
-      run: |
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+      run:
         echo "Deploying application..."
         docker build -t dharanigone/saucelab_demotest:latest .
         docker push dharanigone/saucelab_demotest:latest
