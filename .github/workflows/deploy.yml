@@ -12,6 +12,6 @@ jobs:
     - name: Deploy Application
       run: |
         echo "Deploying application..."
-        docker build -t dharanigone/saucelab_demotest .
-        docker run --rm -e baseURL=https://www.saucedemo.com dharanigone/saucelab_demotest
+        docker build -t dharanigone/saucelab_demotest:latest .
+        docker push dharanigone/saucelab_demotest:latest
         
