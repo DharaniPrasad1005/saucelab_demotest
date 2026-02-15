@@ -32,13 +32,15 @@ test.describe('Shopping Cart Tests', () => {
         productsPage = new ProductsPage(page);
         cartPage = new CartPage(page);
 
-        const selectedProduct1 = await productsPage.getRandomProduct();
+        const selectedProducts = await productsPage.getUniqueRandomProducts(3);
+
+        const selectedProduct1 = selectedProducts[0];
         await productsPage.addRandomProductToCart(selectedProduct1);
 
-        const selectedProduct2 = await productsPage.getRandomProduct();
+        const selectedProduct2 = selectedProducts[1];
         await productsPage.addRandomProductToCart(selectedProduct2);
 
-        const selectedProduct3 = await productsPage.getRandomProduct();
+        const selectedProduct3 = selectedProducts[2];
         await productsPage.addRandomProductToCart(selectedProduct3);
 
         expect(await productsPage.getcartBadgeCount()).toBe('3');
@@ -63,10 +65,12 @@ test.describe('Shopping Cart Tests', () => {
         productsPage = new ProductsPage(page);
         cartPage = new CartPage(page);
 
-        const selectedProduct1 = await productsPage.getRandomProduct();
+        const selectedProducts = await productsPage.getUniqueRandomProducts(2);
+
+        const selectedProduct1 = selectedProducts[0];
         await productsPage.addRandomProductToCart(selectedProduct1);
 
-        const selectedProduct2 = await productsPage.getRandomProduct();
+        const selectedProduct2 = selectedProducts[1];
         await productsPage.addRandomProductToCart(selectedProduct2);
 
         await productsPage.goToCart();
@@ -103,10 +107,11 @@ test.describe('Shopping Cart Tests', () => {
         productsPage = new ProductsPage(page);
         cartPage = new CartPage(page);
 
-        const selectedProduct1 = await productsPage.getRandomProduct();
+        const selectedProducts = await productsPage.getUniqueRandomProducts(2);
+        const selectedProduct1 = selectedProducts[0];
         await productsPage.addRandomProductToCart(selectedProduct1);
 
-        const selectedProduct2 = await productsPage.getRandomProduct();
+        const selectedProduct2 = selectedProducts[1];
         await productsPage.addRandomProductToCart(selectedProduct2);
 
         await productsPage.goToCart();
@@ -122,13 +127,15 @@ test.describe('Shopping Cart Tests', () => {
     test('TC_CART_007 - Cart persists across page navigation', async ({ authenticatedStandardUser: page }) => {
         productsPage = new ProductsPage(page);
 
-        const selectedProduct1 = await productsPage.getRandomProduct();
+        const selectedProducts = await productsPage.getUniqueRandomProducts(3);
+
+        const selectedProduct1 = selectedProducts[0];
         await productsPage.addRandomProductToCart(selectedProduct1);
 
-        const selectedProduct2 = await productsPage.getRandomProduct();
+        const selectedProduct2 = selectedProducts[1];
         await productsPage.addRandomProductToCart(selectedProduct2);
 
-        const selectedProduct3 = await productsPage.getRandomProduct();
+        const selectedProduct3 = selectedProducts[2];
 
         await productsPage.goToProductDetails(selectedProduct3);
 

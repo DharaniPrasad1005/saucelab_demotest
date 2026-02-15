@@ -81,7 +81,23 @@ export class ProductsPage {
         await this.page.locator(this.inventoryItem).filter({ hasText: productName }).locator(this.inventoryItemName).click();
     }
 
+    async getUniqueRandomProducts(count) {
+        const uniqueProducts = new Set();
+
+        let attempts = 0;
+        const maxAttempts = count * 20; // Allow 20 attempts per product needed
+        while (uniqueProducts.size < count && attempts < maxAttempts) {
+            const product = await this.getRandomProduct();
+            uniqueProducts.add(product);
+            attempts++;
+        }
+
+        if (uniqueProducts.size < count) {
+            throw new Error(`Could only find ${uniqueProducts.size} unique products, needed ${count}`);
 
 
+        }
+        return Array.from(uniqueProducts);
+
+    }
 }
-
